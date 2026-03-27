@@ -1,0 +1,75 @@
+package poo.ninja;
+
+public class Ninja {
+
+    String nome;
+    int idade;
+    String aldeia;
+    String cla;
+    String equipamento;
+    String nomeJutso;
+
+    // ✅ CONSTRUTOR ADICIONADO (única correção necessária)
+    public Ninja(String nome, int idade, String aldeia,
+                 String cla, String equipamento, String nomeJutso) {
+
+        this.nome = nome;
+        this.idade = idade;
+        this.aldeia = aldeia;
+        this.cla = cla;
+        this.equipamento = equipamento;
+        this.nomeJutso = nomeJutso;
+    }
+
+    // 🔹 construtor padrão continua existindo
+    public Ninja() {
+    }
+
+    public void apresentarse() {
+        System.out.println("Olá meu nome é " + nome + " sou do cla " + cla);
+    }
+
+    public void realizarJutso() {
+        System.out.println(nome + " realizando jutso " + nomeJutso);
+    }
+
+    public void realizarAniversario() {
+        this.idade = idade + 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Ninja [nome=" + nome + ", idade=" + idade + ", aldeia=" + aldeia +
+               ", cla=" + cla + ", equipamento=" + equipamento +
+               ", nomeJutso=" + nomeJutso + "]";
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public String getAldeia() {
+        return aldeia;
+    }
+
+    public String getCla() {
+        return cla;
+    }
+
+    public String getEquipamento() {
+        return equipamento;
+    }
+
+    public String getNomeJutso() {
+        return nomeJutso;
+    }
+
+    public void realizarInvocacao() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'realizarInvocacao'");
+    }
+}
