@@ -1,15 +1,28 @@
+
+package domain;
+
 public sealed abstract class Employee permits Manager, Salesman{
     
-    private String code;
+    protected  String code;
 
-    private String name;
+    protected  String name;
 
-    private String address;
+    protected  String address;
 
-    private int age;
+    protected int age;
 
-    private double salary;
+    protected double salary;
 
+    public Employee(String code, String name, String address, int age, double salary) {
+        this.code = code;
+        this.name = name;
+        this.address = address;
+        this.age = age;
+        this.salary = salary;
+    }
+    public Employee(){
+        
+    }
     public String getCode() {
         return code;
     }
@@ -49,7 +62,9 @@ public sealed abstract class Employee permits Manager, Salesman{
     public void setSalary(double salary) {
         this.salary = salary;
     }
+    public abstract double getFullSalary();
 
+    
     
 
 }
