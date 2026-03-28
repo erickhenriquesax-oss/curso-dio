@@ -5,7 +5,7 @@ import domain.Salesman;
 public class App {
     public static void main(String[] args) throws Exception {
  
-        printEmployee(new Manager());
+        //printEmployee(new Manager());
         printEmployee(new Salesman());
 
 
@@ -43,7 +43,7 @@ public class App {
                 System.out.println(manager.getLogin());
                 System.out.println(manager.getPassword());
                 System.out.println(manager.getFullSalary(500));
-            }
+            }*/
             case Salesman salesman ->{
                 salesman.setName("Lucas");
                 salesman.setCode("456");
