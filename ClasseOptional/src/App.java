@@ -10,7 +10,7 @@ public class App {
         //Optional<User> optional = Optional.ofNullable(new User( "Joao", 18, MALE));
         Optional<User> optional = Optional.ofNullable(null);
 
-        System.out.println(optional.orElseThrow(() -> new RuntimeException("Errou")));
+        //System.out.println(optional.orElseThrow(() -> new RuntimeException("Errou")));
         System.out.println(optional.orElse(new User( "Maria", 22, FEMALE)));
         
 
