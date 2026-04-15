@@ -1,10 +1,7 @@
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
 import br.com.dio.dao.UserDAO;
 import br.com.dio.model.MenuOption;
 import br.com.dio.model.UserModel;
@@ -14,30 +11,60 @@ public class App {
     private final static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
          
-         System.out.println("Bem vindo ao cadastro de usuários, selecione a opção desejada: ");
-         System.out.println("1 - Cadastrar");
-         System.out.println("2 - Atualizar");
-         System.out.println("3 - Excluir");
-         System.out.println("4 - Buscar por identificador");
-         System.out.println("5 - Listar");
-         System.out.println("6 - Sair");
-         var userOption = scan.nextInt();
 
          while(true){
+            UserDAO dao = new UserDAO();
+            System.out.println("Bem vindo ao cadastro de usuários, selecione a opção desejada: ");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Atualizar");
+            System.out.println("3 - Excluir");
+            System.out.println("4 - Buscar por identificador");
+            System.out.println("5 - Listar");
+            System.out.println("6 - Sair");
+            var userOption = scan.nextInt();
             var selectedOption = MenuOption.values()[userOption - 1];
             switch(selectedOption){
                 case SAVE -> {
-                    UserModel user = requestUserInfo();
-                    userDAO.save(user);
-                    System.out.println("Usuário salvo com sucesso!");
+                    var user = dao.save(requestToSave());
+                    System.out.println("Usuário salvo com sucesso: " + user);
                 }
-                // Adicione outros cases aqui
+                case UPDATE -> {
+                    var user = dao.update(requestToUpdate());
+                    System.out.println("Usuário atualizado com sucesso: " + user);
+                }
+                case DELETE -> {
+                    System.out.println("Usuário excluído"); 
+                    dao.delete(requestId());
+                }
+                case FIND_BY_ID -> {
+                    var id =  requestId();
+                    var user = dao.findById(id);
+                    System.out.println("Usuários encontrados com id " + id + ": ");
+                    System.out.println(user);
+                }
+                case FIND_ALL -> {
+                    var users = dao.findAll();
+                    System.out.println("Usuários encontrados: ");
+                    System.out.println("===============================");
+                    users.forEach(System.out::println);
+                    System.out.println("===============================");
+                }
+                case EXIT -> System.exit(0);
+                
+
+
             }
          }
         
     }
 
-    private static UserModel requestUserInfo(){
+
+    private static Long requestId(){
+        System.out.println("Digite o identificador do usuário: ");
+        return scan.nextLong();
+    }
+
+    private static UserModel requestToSave(){
         System.out.println("Digite o nome do usuário: ");
         var name = scan.next();
         System.out.println("Digite o email do usuário: ");
@@ -45,8 +72,27 @@ public class App {
         System.out.println("Digite a data de nascimento do usuário (dd/MM/yyyy): ");
         var birthDate = scan.next();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate localDate = LocalDate.parse(birthDate, formatter);
-        OffsetDateTime birthday = localDate.atStartOfDay().atOffset(ZoneOffset.UTC);
-        return new UserModel(0L, name, email, birthday);
+        var birthday = OffsetDateTime.parse(birthDate, formatter);
+        System.out.println("Usuário cadastrado com sucesso!");
+        return new UserModel(0L,name, email, birthday);
+        
+    }
+
+    
+      private static UserModel requestToUpdate(){
+        System.out.println("Digite o identificador do usuário: ");
+        var id = scan.nextLong();
+        System.out.println("Digite o nome do usuário: ");
+        var name = scan.next();
+        System.out.println("Digite o email do usuário: ");
+        var email = scan.next();
+        System.out.println("Digite a data de nascimento do usuário (dd/MM/yyyy): ");
+        var birthDate = scan.next();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        var birthday = OffsetDateTime.parse(birthDate, formatter);
+        System.out.println("Usuário atualizado com sucesso!");
+        return new UserModel(id,name, email, birthday);
+
+
     }
 }
