@@ -15,9 +15,7 @@ public class App {
     private final static UserDAO userDAO = new UserDAO();
     private final static Scanner scan = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
-         
-
-         while(true){
+            while(true){
             UserDAO dao = new UserDAO();
             System.out.println("Bem vindo ao cadastro de usuários, selecione a opção desejada: ");
             System.out.println("1 - Cadastrar");

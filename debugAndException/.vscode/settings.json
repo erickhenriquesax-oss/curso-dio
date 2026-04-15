@@ -3,5 +3,12 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar"
-    ]
+    ],
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java"
+    },
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.import.maven.enabled": false,
+    "java.import.gradle.enabled": false,
+    "java.home": "C:\\Program Files\\Java\\jdk-25.0.2"
 }

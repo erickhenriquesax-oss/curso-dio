@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "debugAndException"
+		}
+	],
+	"settings": {
+		"java.project.sourcePaths": ["debugAndException/src"],
+		"java.project.outputPath": "debugAndException/bin",
+		"java.project.referencedLibraries": ["debugAndException/lib/**/*.jar"]
+	}
+}
