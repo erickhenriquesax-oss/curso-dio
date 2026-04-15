@@ -41,10 +41,10 @@ public class App {
                 }
                 case DELETE -> {
                     try{
-                        System.out.println("Usuário excluído"); 
                         dao.delete(requestId());
+                        System.out.println("Usuário excluído"); 
                     }catch(UserNotFoundException | EmptyStoreException ex){
-                        System.out.println(ex.getMessage());
+                        System.out.println(ex.getMessage()); 
                     }
                 }
                 case FIND_BY_ID -> {
