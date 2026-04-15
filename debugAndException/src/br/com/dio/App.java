@@ -1,8 +1,13 @@
+package br.com.dio;
+
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import br.com.dio.dao.UserDAO;
+import br.com.dio.exception.EmptyStoreException;
+import br.com.dio.exception.UserNotFoundException;
 import br.com.dio.model.MenuOption;
 import br.com.dio.model.UserModel;
 
@@ -29,18 +34,32 @@ public class App {
                     System.out.println("Usuário salvo com sucesso: " + user);
                 }
                 case UPDATE -> {
+                    try{
                     var user = dao.update(requestToUpdate());
                     System.out.println("Usuário atualizado com sucesso: " + user);
+                    }catch(UserNotFoundException | EmptyStoreException ex){
+                        System.out.println(ex.getMessage());
+                    }
                 }
                 case DELETE -> {
-                    System.out.println("Usuário excluído"); 
-                    dao.delete(requestId());
+                    try{
+                        System.out.println("Usuário excluído"); 
+                        dao.delete(requestId());
+                    }catch(UserNotFoundException | EmptyStoreException ex){
+                        System.out.println(ex.getMessage());
+                    }
                 }
                 case FIND_BY_ID -> {
-                    var id =  requestId();
-                    var user = dao.findById(id);
-                    System.out.println("Usuários encontrados com id " + id + ": ");
-                    System.out.println(user);
+                    try{
+                        var id =  requestId();
+                        var user = dao.findById(id);
+                        System.out.println("Usuários encontrados com id " + id + ": ");
+                        System.out.println(user);
+                    }catch(UserNotFoundException ex){
+                        System.out.println(ex.getMessage());
+                    }catch(EmptyStoreException ex){
+                        System.out.println(ex.getMessage());
+                    }
                 }
                 case FIND_ALL -> {
                     var users = dao.findAll();
@@ -50,9 +69,6 @@ public class App {
                     System.out.println("===============================");
                 }
                 case EXIT -> System.exit(0);
-                
-
-
             }
          }
         
@@ -72,7 +88,7 @@ public class App {
         System.out.println("Digite a data de nascimento do usuário (dd/MM/yyyy): ");
         var birthDate = scan.next();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        var birthday = OffsetDateTime.parse(birthDate, formatter);
+        var birthday = LocalDate.parse(birthDate, formatter);
         System.out.println("Usuário cadastrado com sucesso!");
         return new UserModel(0L,name, email, birthday);
         
@@ -89,7 +105,7 @@ public class App {
         System.out.println("Digite a data de nascimento do usuário (dd/MM/yyyy): ");
         var birthDate = scan.next();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        var birthday = OffsetDateTime.parse(birthDate, formatter);
+        var birthday = LocalDate.parse(birthDate, formatter);
         System.out.println("Usuário atualizado com sucesso!");
         return new UserModel(id,name, email, birthday);
 
