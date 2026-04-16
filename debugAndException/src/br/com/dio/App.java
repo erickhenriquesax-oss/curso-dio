@@ -8,8 +8,10 @@ import java.util.Scanner;
 import br.com.dio.dao.UserDAO;
 import br.com.dio.exception.EmptyStoreException;
 import br.com.dio.exception.UserNotFoundException;
+import br.com.dio.exception.ValidatorException;
 import br.com.dio.model.MenuOption;
 import br.com.dio.model.UserModel;
+import br.com.dio.Validator.*;
 
 public class App {
     private final static UserDAO userDAO = new UserDAO();
@@ -28,8 +30,16 @@ public class App {
             var selectedOption = MenuOption.values()[userOption - 1];
             switch(selectedOption){
                 case SAVE -> {
+                    try{
                     var user = dao.save(requestToSave());
                     System.out.println("Usuário salvo com sucesso: " + user);
+                    }catch(ValidatorException ex){
+                        System.out.println("Erro de validação: " + ex.getMessage());
+                        ex.printStackTrace();
+                    }
+                    finally{
+                        System.out.println("================================");
+                    }
                 }
                 case UPDATE -> {
                     try{
@@ -37,6 +47,11 @@ public class App {
                     System.out.println("Usuário atualizado com sucesso: " + user);
                     }catch(UserNotFoundException | EmptyStoreException ex){
                         System.out.println(ex.getMessage());
+                    }catch(ValidatorException ex){
+                        System.out.println("Erro de validação: " + ex.getMessage());
+                        ex.printStackTrace();
+                    }finally{
+                        System.out.println("================================");
                     }
                 }
                 case DELETE -> {
@@ -45,6 +60,8 @@ public class App {
                         System.out.println("Usuário excluído"); 
                     }catch(UserNotFoundException | EmptyStoreException ex){
                         System.out.println(ex.getMessage()); 
+                    }finally{
+                        System.out.println("================================");
                     }
                 }
                 case FIND_BY_ID -> {
@@ -78,7 +95,7 @@ public class App {
         return scan.nextLong();
     }
 
-    private static UserModel requestToSave(){
+    private static UserModel requestToSave() throws ValidatorException{
         System.out.println("Digite o nome do usuário: ");
         var name = scan.next();
         System.out.println("Digite o email do usuário: ");
@@ -87,13 +104,20 @@ public class App {
         var birthDate = scan.next();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         var birthday = LocalDate.parse(birthDate, formatter);
-        System.out.println("Usuário cadastrado com sucesso!");
-        return new UserModel(0L,name, email, birthday);
+       
+        return validateInputs(0, name, email, birthday);
         
+    }
+    
+    private static UserModel validateInputs(final long id, final String name, final String email, final LocalDate birthday) throws ValidatorException {
+        var user = new UserModel(id, name, email, birthday);
+        
+        UserValidator.verifyModel(user);
+        return user;
     }
 
     
-      private static UserModel requestToUpdate(){
+      private static UserModel requestToUpdate() throws ValidatorException{
         System.out.println("Digite o identificador do usuário: ");
         var id = scan.nextLong();
         System.out.println("Digite o nome do usuário: ");
@@ -104,8 +128,7 @@ public class App {
         var birthDate = scan.next();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         var birthday = LocalDate.parse(birthDate, formatter);
-        System.out.println("Usuário atualizado com sucesso!");
-        return new UserModel(id,name, email, birthday);
+        return validateInputs(id,name, email, birthday);
 
 
     }
